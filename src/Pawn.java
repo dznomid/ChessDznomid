@@ -10,28 +10,31 @@ public class Pawn extends ChessPiece{
     public String getSymbol(){return "P";}
 
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn){
-        if (checkPos(toLine) && checkPos(toColumn) && checkPos(line) && checkPos(column)) {
-            if (line != toLine && column != toColumn
-                    && (chessBoard.board[toLine][toColumn] == null || !chessBoard.board[toLine][toColumn].color.equals(this.color))
-                    && chessBoard.board[line][column] != null){
-
-                if (chessBoard.board[line][column].color.equals("White")){
-                    if (line == 1 && toLine == (line + 2)){return true;} else{
-                        if (toLine == line + 1 && chessBoard.board[toLine][toColumn] == null){return true;} else{
-                            if((toLine == line + 1) && ((toColumn == column + 1 || toColumn == column - 1))
-                                    && chessBoard.board[toLine][toColumn] != null){return true;}
-                        }
-                    }
-                }else{
-                    if (line == 6 && (toLine == line - 2)){return true;} else{
-                        if (toLine == line - 1 && chessBoard.board[toLine][toColumn] == null){return true;} else{
-                            if((toLine == line - 1) && ((toColumn == column + 1 || toColumn == column - 1))
-                                    && chessBoard.board[toLine][toColumn] != null){return true;} else return false;
-                    }
+        if (checkPos(toLine) && checkPos(toColumn) && checkPos(line) && checkPos(column) && chessBoard.board[line][column] != null) {
+            if (column == toColumn){
+                int dir, start;
+                if (color.equals("White")){
+                    start = 1;
+                    dir = 1;
+                } else {
+                    start = 6;
+                    dir = -1;
                 }
+                if (line + dir == toLine){
+                    return chessBoard.board[toLine][toColumn] == null;
+                }
+                if ((line + 2 * dir) == toLine && line == start){
+                    return chessBoard.board[toLine][toColumn] == null;
+                }
+
+            } else {
+                if ((column - toColumn == 1 || column - toColumn == -1) && (line - toLine == 1 || line - toLine == -1)
+                && chessBoard.board[toLine][toColumn] != null){
+                    return !chessBoard.board[toLine][toColumn].getColor().equals(color);
+                } else return false;
             }
         }
-        return false;   //!!!!!!!!!! maybe true...
-    } else return false;
+        return false;
     }
+
 }
