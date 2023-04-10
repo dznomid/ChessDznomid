@@ -44,4 +44,5 @@ public class ChessBoard {
         }
         System.out.println("Player 1(White)");
     }
+
 }
