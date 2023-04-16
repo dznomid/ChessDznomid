@@ -10,40 +10,24 @@ public class Bishop extends ChessPiece{
         int desNum = 0;
         ChessPiece[][] des = new ChessPiece[8][8];
         if (checkPos(line) && checkPos(column) && checkPos(toLine) && checkPos(toColumn) && chessBoard.board[line][column] != null &&
-        toLine != line && toColumn != column && Math.abs(line - toLine) == Math.abs(column - toColumn) &&
-                !chessBoard.board[toLine][toColumn].getColor().equals(this.color)){
-            if (toLine > line && toColumn > column){  // riqht up sq
+        toLine != line && toColumn != column && Math.abs(line - toLine) == Math.abs(column - toColumn)){
+
+            for (int i = 0; i < 8; i++){
+                for (int j = 0; j < 8; j++){
+                    des[i][j] = chessBoard.board[i][j];
+                }
+            }
+            if (toLine > line && toColumn > column){
                 desNum = 1;
-                for (int i = 0; i < 8; i++){
-                    for (int j = 0; j < 8; j++){
-                        des[j][i] = chessBoard.board[j][i];
-                    }
-                }
-            }
-            if (toLine < line && toColumn > column){   // right bot sq
-                desNum = 2;
-                for (int i = 0; i < 8; i++){
-                    for (int j = 7; j >= 0; j--){
-                        des[j][i] = chessBoard.board[j][i];
-                    }
-                }
-            }
-            if (toLine < line && toColumn < column){     // left bot sq
+            } else if (toLine < line && toColumn > column){
+                desNum= 2;
+            } else if (toLine < line && toColumn < column){
                 desNum = 3;
-                for (int i = 0; i < 8; i++){
-                    for (int j = 0; j < 8; j++){
-                        des[j][i] = chessBoard.board[j][i];
-                    }
-                }
-            }
-            if (toLine > line && toColumn < column){    // left up sq
+            } else if (toLine > line && toColumn < column){
                 desNum = 4;
-                for (int i = 0; i < 8; i++){
-                    for (int j = 7; j >= 0; j--){
-                        des[j][i] = chessBoard.board[j][i];
-                    }
-                }
             }
+
+
             switch (desNum){
                 case 1:
                     l++; c++;
@@ -52,9 +36,9 @@ public class Bishop extends ChessPiece{
                     }
                     break;
                 case 2:
-                    l++; c--;
-                    while (des[l][c] == null && l < toLine && c > toColumn) {
-                        l++; c--;
+                    l--; c++;
+                    while (des[l][c] == null && l > toLine && c < toColumn) {
+                        l--; c++;
                     }
                     break;
                 case 3:
@@ -69,9 +53,14 @@ public class Bishop extends ChessPiece{
                         l++; c--;
                     }
                     break;
+                default: return false;
 
             }
-            if (l == toLine && c == toColumn) return true; else return false;
+            if (l == toLine && c == toColumn) {
+                if (chessBoard.board[toLine][toColumn] != null) {
+                    return !chessBoard.board[toLine][toColumn].getColor().equals(color);
+                } else return true;
+            }
         }
         return false;
 
